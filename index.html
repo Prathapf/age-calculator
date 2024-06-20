@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Age calculator app</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      font-family: Poppins,Arial, Helvetica, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color:rgb(211, 206, 206);
+    }
+    .container{
+      display: flex;
+      justify-content: flex-start;
+      gap: 70px;
+      background-color:white;
+      height: 500px;
+      width: 650px;
+      margin-top: 50px;
+      border-radius: 6px;
+      padding-top: 12px;
+      position: relative;
+    }
+    .container .container-day > input{
+      display: flex;
+      padding: 10px;
+      width: 85px;
+      margin-top: 6px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    .container .container-month > input{
+      display: flex;
+      padding:10px;
+      width: 85px;
+      margin-top: 6px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    .container .container-year > input{
+      display: flex;
+      padding: 10px;
+      width: 85px;
+      margin-top: 6px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    input:focus{
+      outline: none;
+    }
+    .space{
+      width: 100%;
+      height: 2px;
+      background-color: black;
+    }
+    .container-day{
+      padding-left: 35px;
+    }
+    .container-image{
+      background-color: black;
+      position: absolute;
+      top: 20%;
+      left: 80%;
+      border-radius: 50%;
+      height: 60px;
+      width: 60px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .container-image:hover{
+      background-color: purple;
+    }
+    .arrow-image{
+      height: 30px;
+      margin-top:12px;
+      margin-left: 13px;
+    }
+    .space{
+      position: relative;
+      top: 28px;
+      right: 480px;
+      width:480px;
+      border: 1px solid black;
+      opacity: 0.2;
+    }
+    .container-info{
+      position: relative;
+      right: 470px;
+      top: 30%;
+      display: block;
+    }
+    .year{
+      width: 500px;
+      font-size: 4rem;
+      display: block;
+    }
+    .year span:first-child{
+    color:purple;
+    }
+    .month{
+      width: 500px;
+      font-size: 4rem;
+      display: block;
+    }
+    .month span:first-child{
+    color: purple;
+    }
+    .day{
+      width: 500px;
+      font-size: 4rem;
+      display: block;
+    }
+    .day span:first-child{
+    color: purple;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="container-day">
+      <label for="Day" class="label1">Day</label>
+      <input type="number" id="Day" placeholder="DD" max="31" min="1">
+      <div class="error1"></div>
+    </div>
+    <div class="container-month">
+        <label for="Month" class="label2">Month</label>
+        <input type="number" id="Month" placeholder="MM" max="12" min="1">
+        <div class="error2"></div>
+    </div>
+    <div class="container-year">
+      <label for="Year" class="label3">Year</label>
+      <input type="number"  id="Year" placeholder="YYYY" min="1" max="2024">
+      <div class="error3"></div>
+    </div>
+    <div class="container-image">
+      <div class="space"></div>
+      <img src="./assets/images/icon-arrow.svg" alt="arrow" class="arrow-image" onclick="show()">
+    </div>
+    <div class="container-info">
+      <div class="year">
+        <span class="getyear">--</span> 
+        <span>Years</span>
+      </div>
+      <div class="month">
+        <span class="getmonth">--</span> 
+        <span>Months</span>
+      </div>
+      <div class="day">
+        <span class="getday">--</span> 
+        <span>Days</span>
+      </div>
+    </div>
+  </div>
+
+
+  
+    <script>
+      function show() {
+        let day = document.getElementById("Day").value;
+        let month = document.getElementById("Month").value;
+        let year = document.getElementById("Year").value;
+        let hasError = false;
+    
+        // Validation checks
+        if (day === '' || day < 1 || day > 31) {
+          showError('.error1', '.label1', '#Day', 'Please enter a valid day');
+          hasError = true;
+        }
+        if (month === '' || month < 1 || month > 12) {
+          showError('.error2', '.label2', '#Month', 'Please enter a valid month');
+          hasError = true;
+        }
+        if (year === '' || year < 1 || year > new Date().getFullYear()) {
+          showError('.error3', '.label3', '#Year', 'Please enter a valid year');
+          hasError = true;
+        }
+        if (hasError) return;
+    
+        const birthDate = new Date(year, month - 1, day);
+        const currentDate = new Date();
+    
+        let years = currentDate.getFullYear() - birthDate.getFullYear();
+        let months = currentDate.getMonth() - birthDate.getMonth();
+        let days = currentDate.getDate() - birthDate.getDate();
+    
+        // Adjust for cases where the current month/day is earlier in the year than the birth month/day
+        if (days < 0) {
+          months--;
+          days += new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
+    
+        document.querySelector('.getyear').innerHTML = years;
+        document.querySelector('.getmonth').innerHTML = months;
+        document.querySelector('.getday').innerHTML = days;
+      }
+    
+      function showError(errorClass, labelClass, inputId, message) {
+        const errorMessage = document.createElement("div");
+        const error = document.querySelector(errorClass);
+        errorMessage.textContent = message;
+        errorMessage.style.color = "red";
+        errorMessage.style.fontSize = "10px";
+        document.querySelector(labelClass).style.color = "red";
+        document.querySelector(inputId).style.border = "1px solid red";
+        error.appendChild(errorMessage);
+      }
+    </script>
+</body>
+</html>
